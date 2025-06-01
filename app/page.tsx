@@ -4,7 +4,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Download, Copy, ExternalLink, Moon, Sun } from 'lucide-react';
+import {
+  Download,
+  Copy,
+  ExternalLink,
+  Moon,
+  Sun,
+  Github,
+  Expand,
+} from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import InteractiveDiagramViewer from '@/components/interactive-diagram-viewer';
 
@@ -324,16 +332,26 @@ export default function MermaidEditor() {
 
   return (
     <div
-      className={`w-full h-screen ${
+      className={`w-full h-screen relative ${
         darkMode ? 'dark bg-[#212121]' : 'bg-white'
       }`}
     >
-      <div className="absolute bottom-4 left-4 z-50 flex gap-2 [&_button]:bg-white [&_button]:dark:bg-white [&_button]:dark:text-gray-900 [&_button]:dark:hover:bg-gray-200">
+      {/* Control Buttons */}
+      <div className="absolute top-4 left-4 z-50 flex gap-2 [&_button]:bg-white/80 [&_button]:hover:bg-white [&_button]:dark:bg-white/10 [&_button]:dark:text-white [&_button]:dark:hover:bg-white/20 !border-none">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={openInNewTab}
+          className="h-8 dark:border-none"
+          title="Open in new tab"
+        >
+          <Expand className="h-4 w-4" />
+        </Button>
         <Button
           variant="outline"
           size="sm"
           onClick={toggleDarkMode}
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 p-0 dark:border-none"
           title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {darkMode ? (
@@ -342,30 +360,25 @@ export default function MermaidEditor() {
             <Moon className="h-4 w-4" />
           )}
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={copyLink}
-          className="h-8"
-          title="Copy link"
-        >
-          <Copy className="h-4 w-4 mr-2" /> Copy Link
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={openInNewTab}
-          className="h-8"
-          title="Open in new tab"
-        >
-          <ExternalLink className="h-4 w-4 mr-2" /> Open
-        </Button>
       </div>
+
+      {/* GitHub Link */}
+      <a
+        href="https://github.com/trentbrew/mermaid.brew.build"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-4 right-4 z-50 p-2 rounded-full bg-white/80 hover:bg-white transition-colors dark:bg-white/0 dark:hover:bg-white/20"
+        title="View on GitHub"
+      >
+        <Github className="h-5 w-5 text-gray-800 dark:text-white" />
+      </a>
+
       <InteractiveDiagramViewer
         diagramUrl={diagramUrl}
         isLoading={isRendering}
         onError={handleDiagramError}
         className="w-full h-full"
+        darkMode={darkMode}
       />
     </div>
   );

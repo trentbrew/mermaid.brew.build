@@ -8,15 +8,18 @@ import { ZoomIn, ZoomOut, RotateCcw, Move, FileCode } from 'lucide-react';
 
 interface InteractiveDiagramViewerProps {
   diagramUrl: string;
-  isLoading: boolean;
-  onError: () => void;
+  isLoading?: boolean;
+  onError?: () => void;
   className?: string;
+  darkMode?: boolean;
 }
 
 export default function InteractiveDiagramViewer({
   diagramUrl,
-  isLoading,
+  isLoading = false,
   onError,
+  className = '',
+  darkMode = false,
 }: InteractiveDiagramViewerProps) {
   const [scale, setScale] = useState(0.25); // Start at 25% zoom
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -137,8 +140,10 @@ export default function InteractiveDiagramViewer({
     return (
       <div className="w-full h-full flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-          <span className="text-muted-foreground">Rendering diagram...</span>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary dark:border-white"></div>
+          <span className="text-muted-foreground dark:text-white">
+            Rendering diagram...
+          </span>
         </div>
       </div>
     );
@@ -151,10 +156,10 @@ export default function InteractiveDiagramViewer({
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted mb-4">
             <FileCode className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="text-lg font-medium text-foreground mb-1">
+          <h3 className="text-lg font-medium text-foreground mb-1 dark:text-white">
             No diagram to display
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground dark:text-white">
             Enter Mermaid code to see the preview
           </p>
         </div>
@@ -162,15 +167,44 @@ export default function InteractiveDiagramViewer({
     );
   }
 
+  // Calculate dot matrix position based on scale and position
+  const dotMatrixStyle = {
+    position: 'absolute' as const,
+    top: 0,
+    left: 0,
+    width: '200%',
+    height: '200%',
+    backgroundImage:
+      'radial-gradient(circle, currentColor 1px, transparent 1px)',
+    backgroundSize: `${20 * scale}px ${20 * scale}px`,
+    backgroundPosition: `${position.x}px ${position.y}px`,
+    transform: `scale(${scale})`,
+    transformOrigin: 'top left',
+    pointerEvents: 'none' as const,
+    opacity: 0.2,
+  };
+
   return (
     <div className={`relative w-full h-full overflow-hidden`}>
+      {/* Dot Matrix Background */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle, currentColor 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          backgroundPosition: `${position.x}px ${position.y}px`,
+          opacity: darkMode ? 0.05 : 0.1,
+        }}
+      />
+
       {/* Controls */}
-      <div className="absolute top-2 right-2 z-10 flex gap-1 bg-background/80 backdrop-blur-sm rounded-md p-1 shadow-sm border dark:bg-white/90">
+      <div className="absolute top-4 right-16 z-10 flex gap-2 bg-background/80 backdrop-blur-sm rounded-md p-1 shadow-sm border dark:bg-white/10 dark:text-white dark:border-none">
         <Button
           variant="ghost"
           size="sm"
           onClick={handleZoomIn}
-          className="h-8 w-8 p-0"
+          className="h-5 w-5 p-0"
           title="Zoom In"
         >
           <ZoomIn className="h-4 w-4" />
@@ -179,7 +213,7 @@ export default function InteractiveDiagramViewer({
           variant="ghost"
           size="sm"
           onClick={handleZoomOut}
-          className="h-8 w-8 p-0"
+          className="h-5 w-5 p-0"
           title="Zoom Out"
         >
           <ZoomOut className="h-4 w-4" />
@@ -188,7 +222,7 @@ export default function InteractiveDiagramViewer({
           variant="ghost"
           size="sm"
           onClick={handleReset}
-          className="h-8 w-8 p-0"
+          className="h-5 w-5 p-0"
           title="Reset View"
         >
           <RotateCcw className="h-4 w-4" />
@@ -196,7 +230,7 @@ export default function InteractiveDiagramViewer({
       </div>
 
       {/* Zoom indicator */}
-      <div className="absolute top-2 left-2 z-10 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 text-xs font-mono shadow-sm border">
+      <div className="absolute top-4 right-4 z-10 dark:bg-white/10 dark:text-white dark:border-none backdrop-blur-sm rounded-md px-2 py-1.5 text-xs font-mono shadow-sm border">
         {Math.round(scale * 100)}%
       </div>
 
