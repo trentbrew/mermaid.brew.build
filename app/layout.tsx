@@ -2,6 +2,7 @@
 
 import type { Metadata } from 'next';
 import './globals.css';
+import { Suspense } from 'react';
 
 export default function RootLayout({
   children,
@@ -10,7 +11,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="overflow-hidden">{children}</body>
+      <Suspense fallback={null}>
+        <body className="overflow-hidden">{children}</body>
+      </Suspense>
     </html>
   );
 }
