@@ -330,12 +330,34 @@ export default function MermaidEditor() {
     window.open(url, '_blank');
   };
 
+  if (!mermaidCode) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-screen">
+        <p className="text-center text-lg">
+          Welcome to mermaid.brew.build! To render a diagram,{' '}
+          <a
+            href="https://github.com/trentbrew/mermaid.brew.build#encoding-syntax"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            encode
+          </a>{' '}
+          your mermaid code and add it as a URL hash or query string parameter.
+          For example:
+          <br />
+          <a
+            className="underline text-blue-500"
+            href={`https://mermaid.brew.build/#graph%20TD%3BA%5BInput%5D-->B%5BProcess%5D%0AB-->C%5BOutput%5D%0AC-->D%5BFeedback%5D%0AD-->B`}
+          >
+            {`https://mermaid.brew.build/#graph%20TD%3BA%5BInput%5D-->B%5BProcess%5D%0AB-->C%5BOutput%5D%0AC-->D%5BFeedback%5D%0AD-->B`}
+          </a>
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`w-full h-screen relative ${
-        darkMode ? 'dark bg-[#212121]' : 'bg-white'
-      }`}
-    >
+    <div className="w-full h-screen relative">
       {/* Control Buttons */}
       <div className="absolute top-4 left-4 z-50 flex gap-2 [&_button]:bg-white/80 [&_button]:hover:bg-white [&_button]:dark:bg-white/10 [&_button]:dark:text-white [&_button]:dark:hover:bg-white/20 !border-none">
         <Button
