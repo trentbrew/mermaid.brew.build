@@ -31,8 +31,8 @@ const decodeMermaidCode = (encoded: string) => {
 
 export default function MermaidEditor() {
   const { toast } = useToast();
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const pathname = usePathname();
 
   // Get initial state from URL

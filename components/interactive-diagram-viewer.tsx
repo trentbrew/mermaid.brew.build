@@ -21,7 +21,7 @@ export default function InteractiveDiagramViewer({
   className = '',
   darkMode = false,
 }: InteractiveDiagramViewerProps) {
-  const [scale, setScale] = useState(0.25); // Start at 25% zoom
+  const [scale, setScale] = useState(0.8); // Start at 80% zoom
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -113,7 +113,7 @@ export default function InteractiveDiagramViewer({
 
   // Simple fit to screen function that just centers the diagram
   const fitDiagramToScreen = useCallback(() => {
-    setScale(0.25); // Always set to 25% zoom
+    setScale(0.8); // Always set to 80% zoom
     setPosition({ x: 0, y: 0 }); // Center the diagram
   }, []);
 
