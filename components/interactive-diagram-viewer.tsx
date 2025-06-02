@@ -138,12 +138,9 @@ export default function InteractiveDiagramViewer({
 
   if (isLoading) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary dark:border-white"></div>
-          <span className="text-muted-foreground dark:text-white">
-            Rendering diagram...
-          </span>
+      <div className={`relative w-full h-full ${className}`}>
+        <div className="absolute inset-0 flex items-center justify-center bg-background/50">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       </div>
     );
@@ -151,16 +148,26 @@ export default function InteractiveDiagramViewer({
 
   if (!diagramUrl) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-background">
-        <div className="text-center p-6 max-w-md">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted mb-4">
-            <FileCode className="h-6 w-6 text-muted-foreground" />
+      <div className={`w-full h-full flex items-center justify-center bg-background ${className}`}>
+        <div className="text-center p-8 max-w-md">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mb-6 text-primary">
+            <FileCode className="h-8 w-8" />
           </div>
-          <h3 className="text-lg font-medium text-foreground mb-1 dark:text-white">
+          <h3 className="text-xl font-semibold text-foreground mb-2">
             No diagram to display
           </h3>
-          <p className="text-sm text-muted-foreground dark:text-white">
-            Enter Mermaid code to see the preview
+          <p className="text-muted-foreground mb-6">
+            Enter Mermaid code in the editor to generate a diagram
+          </p>
+          <div className="text-left text-sm text-muted-foreground bg-muted/50 p-4 rounded-lg border border-dashed border-border font-mono space-y-2">
+            <p># Try this example:</p>
+            <p>graph TD;</p>
+            <p className="ml-4">A[Start] --> B[Your Diagram]</p>
+            <p className="ml-4">B --> C[Get Creative!]</p>
+            <p className="ml-4">C --> D[Customize Me]</p>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Need help? Check out the <a href="https://mermaid.js.org/intro/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Mermaid documentation</a>
           </p>
         </div>
       </div>
@@ -267,7 +274,7 @@ export default function InteractiveDiagramViewer({
         >
           <img
             ref={imageRef}
-            src={diagramUrl || '/placeholder.svg'}
+            src={diagramUrl}
             alt="Mermaid Diagram"
             className="max-w-none max-h-none"
             onError={onError}
