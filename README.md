@@ -2,6 +2,15 @@
 
 Easily embed interactive Mermaid.js diagrams in your projects using simple iframes. No installation or configuration required - just use our hosted solution to render beautiful diagrams anywhere on the web.
 
+```mermaid
+graph TD
+  A[User's Website or App] -->|iframe embed| B[Mermaid Diagram Embed App]
+  B -->|Parses Mermaid code| C[Mermaid.js Renderer]
+  C -->|Renders SVG/PNG| D[Interactive Diagram Display]
+  D -->|Displayed in iframe| A
+  B -.->|API optional| C
+```
+
 ![Mermaid Editor Screenshot](https://trentbrew.pockethost.io/api/files/swvnum16u65or8w/73y6usyvz6qnjdw/image_27_TSLqQ7QXki.png?token=)
 
 [Demo](<https://mermaid.brew.build/#graph%20TD%0A%20%20A(Broadcasters)%0A%20%20B(Producers)%0A%20%20C(Viewers)%0A%20%20D(Partners%20%26%20Sponsors)%0A%0A%20%20A%20--%3E%7CInvite%2C%20manage%2C%20schedule%7C%20B%0A%20%20B%20--%3E%7CSubmit%20content%20to%7C%20A%0A%20%20A%20--%3E%7CCurate%20content%20for%7C%20C%0A%20%20C%20--%3E%7CWatch%20%26%20engage%20with%7C%20B%0A%20%20C%20--%3E%7CProvide%20feedback%20to%7C%20A%0A%20%20D%20--%3E%7CSupport%20content%20via%20funding%20or%20partnership%7C%20A%0A%20%20D%20--%3E%7CReach%20audience%20through%7C%20C%0A%20%20A%20--%3E%7CReport%20outcomes%20to%7C%20D%0A%20%20B%20--%3E%7CMay%20also%20engage%20with%7C%20D%0A%0A%20%20style%20A%20fill%3A%23E3F2FD%2Cstroke%3A%232196F3%2Cstroke-width%3A2px%0A%20%20style%20B%20fill%3A%23E8F5E9%2Cstroke%3A%234CAF50%2Cstroke-width%3A2px%0A%20%20style%20C%20fill%3A%23FFF3E0%2Cstroke%3A%23FF9800%2Cstroke-width%3A2px%0A%20%20style%20D%20fill%3A%23F3E5F5%2Cstroke%3A%239C27B0%2Cstroke-width%3A2px'>)
