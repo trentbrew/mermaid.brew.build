@@ -73,9 +73,8 @@ export default function InteractiveDiagramViewer({
   }, []);
 
   const handleWheel = useCallback((e: React.WheelEvent) => {
+    // Disable scroll-to-zoom: only prevent default scrolling
     e.preventDefault();
-    const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    setScale((prev) => Math.max(0.1, Math.min(5, prev * delta)));
   }, []);
 
   // Touch events for mobile support
