@@ -209,20 +209,20 @@ export default function InteractiveDiagramViewer({
         <Button
           variant="ghost"
           size="sm"
-          onClick={handleZoomIn}
-          className="h-5 w-5 p-0"
-          title="Zoom In"
-        >
-          <ZoomIn className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
           onClick={handleZoomOut}
           className="h-5 w-5 p-0"
           title="Zoom Out"
         >
           <ZoomOut className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleZoomIn}
+          className="h-5 w-5 p-0"
+          title="Zoom In"
+        >
+          <ZoomIn className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"

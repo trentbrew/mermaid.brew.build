@@ -61,7 +61,7 @@ To properly include your Mermaid diagram in the URL, you'll need to URL-encode y
    ```
    graph TD A[Start] --> B{Is it?} B -->|Yes| C[OK] C --> D[Rethink] D --> B B ---->|No| E[End]
    ```
-
+   
 3. **URL-encode the string** (JavaScript example):
 
    ```javascript

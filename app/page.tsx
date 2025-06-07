@@ -35,48 +35,13 @@ export default function MermaidEditor() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  // Get initial state from URL
-  const getInitialState = () => {
-    if (typeof window === 'undefined') return { code: '', darkMode: false };
-
-    let code = '';
-    let darkMode = searchParams.get('dark') === '1';
-
-    // Get code from hash
-    if (window.location.hash) {
-      try {
-        const hash = window.location.hash.substring(1); // Remove the '#'
-        if (hash) {
-          const decoded = decodeURIComponent(hash);
-          if (decoded) code = decoded;
-        }
-      } catch (e) {
-        console.error('Error decoding hash:', e);
-      }
-    }
-
-    // Fallback to query param (for backward compatibility)
-    if (!code) {
-      const codeParam = searchParams.get('code');
-      if (codeParam) {
-        try {
-          const decoded = decodeURIComponent(codeParam);
-          if (decoded) code = decoded;
-        } catch (e) {
-          console.error('Error decoding code param:', e);
-        }
-      }
-    }
-
-    return { code, darkMode };
-  };
-
-  const { code: initialCode, darkMode: initialDarkMode } = getInitialState();
-  const [mermaidCode, setMermaidCode] = useState<string>(initialCode || '');
-  const [darkMode, setDarkMode] = useState<boolean>(initialDarkMode);
+  // State for client-only Mermaid code and dark mode
+  const [mermaidCode, setMermaidCode] = useState<string>('');
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [diagramType, setDiagramType] = useState<string>('flowchart');
   const [isRendering, setIsRendering] = useState<boolean>(false);
   const [diagramUrl, setDiagramUrl] = useState<string>('');
+  const [isClient, setIsClient] = useState(false);
   const [examples, setExamples] = useState<Record<string, string>>({
     flowchart: `graph TD;
     A["Start"] --> B["Process"];
@@ -160,6 +125,40 @@ export default function MermaidEditor() {
     style M fill:#e8f5e8`,
   });
 
+  // Only read from window/searchParams on client
+  useEffect(() => {
+    setIsClient(true);
+    let code = '';
+    let dark = false;
+    // Get code from hash
+    if (window.location.hash) {
+      try {
+        const hash = window.location.hash.substring(1);
+        if (hash) {
+          const decoded = decodeURIComponent(hash);
+          if (decoded) code = decoded;
+        }
+      } catch (e) {
+        console.error('Error decoding hash:', e);
+      }
+    }
+    // Fallback to query param
+    if (!code) {
+      const codeParam = searchParams.get('code');
+      if (codeParam) {
+        try {
+          const decoded = decodeURIComponent(codeParam);
+          if (decoded) code = decoded;
+        } catch (e) {
+          console.error('Error decoding code param:', e);
+        }
+      }
+    }
+    dark = searchParams.get('dark') === '1';
+    setMermaidCode(code || '');
+    setDarkMode(dark);
+  }, [searchParams]);
+
   // Update URL with current state
   const updateUrl = useCallback(
     (newCode?: string, newDarkMode?: boolean) => {
@@ -234,7 +233,7 @@ export default function MermaidEditor() {
     setDiagramType(type);
     const newCode = examples[type];
     setMermaidCode(newCode);
-    updateUrlWithCode(newCode);
+    updateUrl(newCode, darkMode);
   };
 
   const downloadSVG = async () => {
@@ -329,6 +328,13 @@ export default function MermaidEditor() {
 
     window.open(url, '_blank');
   };
+
+  // Only render the diagram after client-side hydration
+  if (!isClient) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-screen" />
+    );
+  }
 
   if (!mermaidCode) {
     return (
