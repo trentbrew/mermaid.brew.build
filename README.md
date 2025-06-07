@@ -68,7 +68,7 @@ To properly include your Mermaid diagram in the URL, you'll need to URL-encode y
    const mermaidCode =
      'graph TD A[Start] --> B{Is it?} B -->|Yes| C[OK] C --> D[Rethink] D --> B B ---->|No| E[End]';
    const encoded = encodeURIComponent(mermaidCode);
-   const url = `https://your-app-url.com/embed?code=${encoded}`;
+   const url = `https://mermaid.brew.build/embed?code=${encoded}`;
    ```
 
 4. **Resulting URL**:
